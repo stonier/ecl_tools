@@ -7,8 +7,8 @@
   <maintainer email="d.stonier@gmail.com">Daniel Stonier</maintainer>
   <license>BSD</license>
   <url type="website">http://www.ros.org/wiki/ecl_tools</url>
-  <url type="repository">http://code.google.com/p/embedded-control-library/source/browse/</url>
-  <url type="bugtracker">http://code.google.com/p/embedded-control-library/issues/list</url>
+  <url type="repository">https://github.com/stonier/ecl_tools</url>
+  <url type="bugtracker">https://github.com/stonier/ecl_tools/issues</url>
   <author email="d.stonier@gmail.com">Daniel Stonier</author>
 
   <build_depend>ecl_license</build_depend>
