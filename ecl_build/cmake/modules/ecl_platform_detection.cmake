@@ -27,6 +27,7 @@ macro(ecl_detect_distro)
         string(REGEX MATCH "11.04" DISTRO_NATTY ${ETC_ISSUE})
         string(REGEX MATCH "11.10" DISTRO_ONEIRIC ${ETC_ISSUE})
         string(REGEX MATCH "12.04" DISTRO_PRECISE ${ETC_ISSUE})
+        string(REGEX MATCH "12.10" DISTRO_QUANTAL ${ETC_ISSUE})
     endif()
     if(DISTRO_KARMIC)
         set(DISTRO_NAME "Ubuntu")
@@ -52,6 +53,10 @@ macro(ecl_detect_distro)
         set(DISTRO_NAME "Ubuntu")
         set(DISTRO_VERSION "12.04")
         set(DISTRO_VERSION_STRING "precise")
+    elseif(DISTRO_QUANTAL)
+        set(DISTRO_NAME "Ubuntu")
+        set(DISTRO_VERSION "12.10")
+        set(DISTRO_VERSION_STRING "quantal")
     else()
         set(DISTRO_NAME DISTRO_NAME-UNKNOWN)
         set(DISTRO_VERSION DISTRO_VERSION-UNKNOWN)
@@ -71,15 +76,17 @@ endmacro()
 # for public consumption if found (these are close to equivalent
 # to their c macro counterparts):
 #
-#  - POSIX_HAS_CLOCK_GETTIME
-#  - POSIX_HAS_CLOCK_NANOSLEEP
-#  - POSIX_HAS_TIMERS
-#  - POSIX_HAS_PRIORITY_SCHEDULING
-#  - POSIX_HAS_TIMEOUTS
-#  - POSIX_HAS_SEMAPHORES
-#  - POSIX_HAS_SHARED_MEMORY_OBJECTS
-#  - POSIX_HAS_CLOCK_MONOTONIC
-#  - POSIX_HAS_CPUTIME
+#  - ECL_POSIX_HAS_CLOCK_GETTIME
+#  - ECL_POSIX_HAS_CLOCK_MONOTONIC
+#  - ECL_POSIX_HAS_CLOCK_NANOSLEEP
+#  - ECL_POSIX_HAS_CLOCK_SELECTION
+#  - ECL_POSIX_HAS_NANOSLEEP
+#  - ECL_POSIX_HAS_TIMERS
+#  - ECL_POSIX_HAS_PRIORITY_SCHEDULING
+#  - ECL_POSIX_HAS_TIMEOUTS
+#  - ECL_POSIX_HAS_SEMAPHORES
+#  - ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS
+#  - ECL_POSIX_HAS_CPUTIME
 #
 macro(ecl_detect_posix)
 
@@ -103,26 +110,45 @@ macro(ecl_detect_posix)
     endif()
     
     if(POSIX_HAS_CLOCK_GETTIME)
-        set(POSIX_HAS_MONOTONIC_CLOCK TRUE)
+        set(ECL_POSIX_HAS_CLOCK_GETTIME TRUE CACHE BOOL "platform has posix clock_gettime.")
+        set(ECL_POSIX_HAS_CLOCK_MONOTONIC TRUE CACHE BOOL "platform has posix monotonic clock.")
     endif()
     if(POSIX_HAS_CLOCK_NANOSLEEP)
-        set(POSIX_HAS_CLOCK_SELECTION TRUE)
+        set(ECL_POSIX_HAS_CLOCK_NANOSLEEP TRUE CACHE BOOL "platform has posix nanosleep clock.")
+        set(ECL_POSIX_HAS_CLOCK_SELECTION TRUE CACHE BOOL "platform has posix clock selection.")
     endif()
     if(POSIX_HAS_NANOSLEEP)
-        set(POSIX_HAS_TIMERS TRUE)
+        set(ECL_POSIX_HAS_NANOSLEEP TRUE CACHE BOOL "platform has posix nanosleep.")
+        set(ECL_POSIX_HAS_TIMERS TRUE CACHE BOOL "platform has posix timers.")
     endif()
     if(POSIX_HAS_SCHED_SETSCHEDULER)
-        set(POSIX_HAS_PRIORITY_SCHEDULING TRUE)
+        set(ECL_POSIX_HAS_PRIORITY_SCHEDULING TRUE CACHE BOOL "platform has posix priority scheduling.")
     endif()
     if(POSIX_HAS_SEM_TIMEDWAIT AND POSIX_HAS_MUTEX_TIMEDLOCK)
-        set(POSIX_HAS_TIMEOUTS TRUE)
+        set(ECL_POSIX_HAS_TIMEOUTS TRUE CACHE BOOL "platform has posix timed wait and timed locks.")
     endif()
     if(POSIX_HAS_SEM_INIT)
-        set(POSIX_HAS_SEMAPHORES TRUE)
+        set(ECL_POSIX_HAS_SEMAPHORES TRUE CACHE BOOL "platform has posix semaphores.")
     endif()
     if(POSIX_HAS_SHM_OPEN)
-        set(POSIX_HAS_SHARED_MEMORY_OBJECTS TRUE)
+        set(ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS TRUE CACHE BOOL "platform has posix shared memory.")
     endif()
+    if(POSIX_HAS_CPUTIME)
+        set(ECL_POSIX_HAS_CPUTIME TRUE CACHE BOOL "platform has posix cpu time.")
+    endif()
+  mark_as_advanced(
+    ECL_POSIX_HAS_CLOCK_GETTIME
+    ECL_POSIX_HAS_CLOCK_MONOTONIC
+    ECL_POSIX_HAS_CLOCK_NANOSLEEP
+    ECL_POSIX_HAS_CLOCK_SELECTION
+    ECL_POSIX_HAS_NANOSLEEP
+    ECL_POSIX_HAS_TIMERS
+    ECL_POSIX_HAS_PRIORITY_SCHEDULING
+    ECL_POSIX_HAS_TIMEOUTS
+    ECL_POSIX_HAS_SEMAPHORES
+    ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS
+    ECL_POSIX_HAS_CPUTIME
+  )
 endmacro()
 
 ###############################
@@ -145,23 +171,24 @@ endmacro()
 ###############################
 # Detect Timers
 ###############################
-# This is very rough, if the right env found, sets the variables to 1
+# This is very rough, if the right env found, sets the variables to TRUE
 # 
-#  - PLATFORM_HAS_WIN_TIMERS
-#  - PLATFORM_HAS_MACH_TIMERS
-#  - PLATFORM_HAS_RT_TIMERS
-#  - PLATFORM_HAS_POSIX_TIMERS
+#  - ECL_PLATFORM_HAS_WIN_TIMERS
+#  - ECL_PLATFORM_HAS_MACH_TIMERS
+#  - ECL_PLATFORM_HAS_RT_TIMERS
+#  - ECL_PLATFORM_HAS_POSIX_TIMERS
 #
 macro(ecl_detect_timers)
   if(WIN32)
-    set(PLATFORM_HAS_WIN_TIMERS 1)
+    set(ECL_PLATFORM_HAS_WIN_TIMERS TRUE CACHE BOOL "platform has win32 timers.")
   elseif(APPLE)
-    set(PLATFORM_HAS_MACH_TIMERS 1) # Should we check for this?
-  elseif(POSIX_HAS_CLOCK_GETTIME AND POSIX_HAS_CLOCK_NANOSLEEP) # Found by ecl_detect_posix 
-    set(PLATFORM_HAS_RT_TIMERS TRUE)
-  elseif ( POSIX_HAS_TIMERS ) 
-    set(PLATFORM_HAS_POSIX_TIMERS 1) 
+    set(ECL_PLATFORM_HAS_MACH_TIMERS TRUE CACHE BOOL "platform has apple mach timers.")
+  elseif(ECL_POSIX_HAS_CLOCK_GETTIME AND ECL_POSIX_HAS_CLOCK_NANOSLEEP) # Found by ecl_detect_posix 
+    set(ECL_PLATFORM_HAS_RT_TIMERS TRUE CACHE BOOL "platform has clock_gettime and clock_nanosleep.")
+  elseif ( ECL_POSIX_HAS_TIMERS ) 
+    set(ECL_PLATFORM_HAS_POSIX_TIMERS TRUE CACHE BOOL "platform has basic posix timers.")
   endif()
+  mark_as_advanced(ECL_PLATFORM_HAS_WIN_TIMERS ECL_PLATFORM_HAS_MACH_TIMERS ECL_PLATFORM_HAS_RT_TIMERS ECL_PLATFORM_HAS_POSIX_TIMERS)
 endmacro()
 
 ###############################
@@ -358,6 +385,9 @@ endmacro()
 # The one to bind them all (detect macros)
 #
 macro(ecl_detect_platform)
+  if(NOT DEFINED ECL_PLATFORM_DETECTION)
+    set(ECL_PLATFORM_DETECTION TRUE CACHE BOOL "ecl has run platform detection checks.")
+    mark_as_advanced(ECL_PLATFORM_DETECTION)
     ecl_detect_distro()
     ecl_detect_posix()
     ecl_detect_threads()
@@ -367,13 +397,15 @@ macro(ecl_detect_platform)
     #ecl_detect_char_type() # has a try_run test, bad for cross compiling
     ecl_detect_compiler_version()
     if(NOT PLATFORM_IS_POSIX)
-        if(WIN32)
-            set(PLATFORM_IS_WIN32 1)
-        endif()
+      if(WIN32)
+        set(PLATFORM_IS_WIN32 1)
+      endif()
     endif()
     if(APPLE) 
-        set(PLATFORM_IS_APPLE 1)
+      set(PLATFORM_IS_APPLE 1)
     endif()
+    ecl_summary_platform()
+  endif()
 endmacro()
 
 ###############################
@@ -405,27 +437,14 @@ macro(ecl_summary_platform)
     if ( NOT DISTRO_VERSION STREQUAL "DISTRO_VERSION-UNKNOWN")
         message(" - version......................${DISTRO_VERSION}")
     endif()
-    # Cpu Specifics
-    if(DEFINED PLATFORM_ARCH)
-        message("Architecture....................${PLATFORM_ARCH}")
-    endif(DEFINED PLATFORM_ARCH)
-    if(DEFINED PLATFORM_CPU)
-        message("Cpu type........................${PLATFORM_CPU}")
-    endif(DEFINED PLATFORM_CPU)
-    if(DEFINED PLATFORM_TUNE)
-        message("Tuned cpu type..................${PLATFORM_TUNE}")
-    endif(DEFINED PLATFORM_TUNE)
-    if(DEFINED PLATFORM_OTHER_CFLAGS)
-        message("Cpu specific cflags.............${PLATFORM_OTHER_CFLAGS}")
-    endif(DEFINED PLATFORM_OTHER_CFLAGS)
     # Timers
-    if(PLATFORM_HAS_RT_TIMERS)
+    if(ECL_PLATFORM_HAS_RT_TIMERS)
         message("Timer model.....................real-time")
-    elseif(PLATFORM_HAS_MACH_TIMERS)
+    elseif(ECL_PLATFORM_HAS_MACH_TIMERS)
         message("Timer model.....................macosx")
-    elseif(PLATFORM_HAS_POSIX_TIMERS)
+    elseif(ECL_PLATFORM_HAS_POSIX_TIMERS)
         message("Timer model.....................posix")
-    elseif(PLATFORM_HAS_WIN_TIMERS)
+    elseif(ECL_PLATFORM_HAS_WIN_TIMERS)
         message("Timer model.....................winmm")
     else()
         message("Timer model.....................unspecified")
@@ -465,52 +484,52 @@ macro(ecl_summary_platform)
         message("Posix Specifications")
         message("-------------------------------------------------------------------")
         message("")
-        if(POSIX_HAS_CLOCK_SELECTION)
+        if(ECL_POSIX_HAS_CLOCK_SELECTION)
             message("Clock selection.................yes")
         else()
             message("Clock selection.................no")
         endif()
-        if(POSIX_HAS_MONOTONIC_CLOCK)
+        if(ECL_POSIX_HAS_CLOCK_MONOTONIC)
             message("Monotonic clock.................yes")
         else()
           message("Monotonic clock.................no")
         endif()
-        if(POSIX_HAS_PRIORITY_SCHEDULING)
+        if(ECL_POSIX_HAS_PRIORITY_SCHEDULING)
             message("Priority scheduling.............yes")
         else()
             message("Priority scheduling.............no")
         endif()
-        if(POSIX_HAS_SEMAPHORES)
+        if(ECL_POSIX_HAS_SEMAPHORES)
             message("Semaphores......................yes")
         else()
             message("Semaphores......................no")
         endif()
-        if(POSIX_HAS_SHARED_MEMORY_OBJECTS)
+        if(ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS)
             message("Shared memory objects...........yes")
         else()
             message("Shared memory objects...........no")
         endif()
-        if(POSIX_HAS_TIMERS)
+        if(ECL_POSIX_HAS_TIMERS)
             message("Timers..........................yes")
         else()
             message("Timers..........................no")
         endif()
-        if(POSIX_HAS_TIMEOUTS)
+        if(ECL_POSIX_HAS_TIMEOUTS)
             message("Timeouts........................yes")
         else()
             message("Timeouts........................no")
         endif()
-        if(POSIX_HAS_CLOCK_GETTIME)
+        if(ECL_POSIX_HAS_CLOCK_GETTIME)
             message(" - clock_gettime................yes")
         else()
             message(" - clock_gettime................no")
         endif()
-        if(POSIX_HAS_CLOCK_NANOSLEEP)
+        if(ECL_POSIX_HAS_CLOCK_NANOSLEEP)
             message(" - clock_nanosleep..............yes")
         else()
             message(" - clock_nanosleep..............no")
         endif()
-        if(POSIX_HAS_NANOSLEEP)
+        if(ECL_POSIX_HAS_NANOSLEEP)
             message(" - nanosleep....................yes")
         else()
             message(" - nanosleep....................no")
@@ -525,20 +544,24 @@ macro(ecl_summary_platform)
         else()
             message(" - sched_setscheduler...........no")
         endif()
-        if(POSIX_HAS_SEM_INIT)
-            message(" - sem_init.....................yes")
-        else()
-            message(" - sem_init.....................no")
+        if(ECL_POSIX_HAS_SEMAPHORES)
+            if(POSIX_HAS_SEM_INIT)
+                message(" - sem_init.....................yes")
+            else()
+                message(" - sem_init.....................no")
+            endif()
+            if(POSIX_HAS_SEM_TIMEDWAIT)
+                message(" - sem_timedwait................yes")
+            else()
+                message(" - sem_timedwait................no")
+            endif()
         endif()
-        if(POSIX_HAS_SEM_TIMEDWAIT)
-            message(" - sem_timedwait................yes")
-        else()
-            message(" - sem_timedwait................no")
-        endif()
-        if(POSIX_HAS_SHM_OPEN)
-            message(" - shm_open.....................yes")
-        else()
-            message(" - shm_open.....................no")
+        if(ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS)
+            if(POSIX_HAS_SHM_OPEN)
+                message(" - shm_open.....................yes")
+            else()
+                message(" - shm_open.....................no")
+            endif()
         endif()
         message("")
     endif()
