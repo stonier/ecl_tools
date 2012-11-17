@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package>
+  <name>ecl_license</name>
+  <version>0.5.0</version>
+  <description>
+     Maintains the ecl licenses and also provides an install
+     target for deploying licenses with the ecl libraries.
+  </description>
+  <maintainer email="d.stonier@gmail.com">Daniel Stonier</maintainer>
+  <license>BSD</license>
+  <url type="website">http://wiki.ros.org/ecl_license</url>
+  <url type="repository">http://code.google.com/p/embedded-control-library/source/browse/</url>
+  <url type="bugtracker">http://code.google.com/p/embedded-control-library/issues/list</url>
+  <author email="d.stonier@gmail.com">Daniel Stonier</author> -->
+
+  <build_depend>catkin</build_depend>
+</package>
+
+

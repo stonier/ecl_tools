@@ -1,0 +1,17 @@
+#!/bin/bash
+
+rm -rf ${WORKSPACE}/ros
+rosinstall ${WORKSPACE}/ros "http://packages.ros.org/cgi-bin/gen_rosinstall.py?rosdistro=electric&variant=ros-base&overlay=no"
+rosinstall ${WORKSPACE}/ros "http://embedded-control-library.googlecode.com/svn/trunk/ecl_unstable.rosinstall"
+echo "========== Setting up Ros Environment =========="
+source ${WORKSPACE}/ros/setup.bash
+echo "========== Compiling =========="
+rosmake ecl_lite
+rosmake ecl_core
+rosmake ecl_navigation
+rosmake ecl_manipulation
+# Need to build tests.
+rosmake --target=test ecl_lite
+rosmake --target=test ecl_core
+rosmake --target=test ecl_navigation
+rosmake --target=test ecl_manipulation
