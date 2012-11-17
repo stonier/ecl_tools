@@ -245,48 +245,6 @@ macro(ecl_detect_endianness)
 endmacro()
 
 ###############################
-# Set Platform Specific Flags
-###############################
-# This is rather dependant on having used the ecl toolchain/platform
-# cmake scripts to configure the following variables:
-#
-#  - PLATFORM_ARCH/PLATFORM_CPU/PLATFORM_TUNE/PLATFORM_OTHER_CFLAGS
-# 
-# It parses these and adds them in the correct way to CMAKE_CXX_FLAGS.
-#
-macro(ecl_set_platform_cflags)
-    set(PLATFORM_ARCH "unspecified" CACHE STRING "Architecture type to pass (e.g. to gcc via -march)." )
-    set(PLATFORM_CPU "unspecified" CACHE STRING "Cpu type to pass (e.g. to gcc via -mcpu)." )
-    set(PLATFORM_TUNE "unspecified" CACHE STRING "Cpu type to tune (e.g. to gcc via -mtune)." )
-    
-    # Reason for having abstracted arch,cpu and tunes are so that 
-    # different compiler flags for different platforms can be used here.
-    IF ( NOT ROS_COMPILE_FLAGS ) # Don't add anything here if ros has already handled it
-      if( CMAKE_COMPILER_IS_GNUCXX ) # # Generic GnuCXX, also includes MinGW
-        if(NOT PLATFORM_ARCH STREQUAL "unspecified") # System Architecture
-          set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -march=${PLATFORM_ARCH}") # This gets used for all builds
-          set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=${PLATFORM_ARCH}") # This gets used for all builds
-        endif(NOT PLATFORM_ARCH STREQUAL "unspecified")
-        if(NOT PLATFORM_CPU STREQUAL "unspecified") # System CPU
-          set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=${PLATFORM_CPU}")
-          set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mcpu=${PLATFORM_CPU}")
-        endif(NOT PLATFORM_CPU STREQUAL "unspecified")
-        if(NOT PLATFORM_TUNE STREQUAL "unspecified") # System CPU Tuner
-          set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mtune=${PLATFORM_TUNE}")
-          set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mtune=${PLATFORM_TUNE}")
-        endif(NOT PLATFORM_TUNE STREQUAL "unspecified")
-        if(DEFINED PLATFORM_OTHER_CFLAGS)
-          set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${PLATFORM_OTHER_CFLAGS}")
-          set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${PLATFORM_OTHER_CFLAGS}")
-        endif(DEFINED PLATFORM_OTHER_CFLAGS)
-      endif()
-    endif()
-    
-    string(STRIP "${CMAKE_C_FLAGS}" CMAKE_C_FLAGS)
-    string(STRIP "${CMAKE_CXX_FLAGS}" CMAKE_CXX_FLAGS)
-endmacro()
-
-###############################
 # Compiler Version
 ###############################
 # Configures the variables:
