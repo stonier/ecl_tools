@@ -154,18 +154,22 @@ endmacro()
 ###############################
 # Detect Threads
 ###############################
-# If present, sets the variables to 1
+# If present, sets the variables to true
 #
-#  - PLATFORM_HAS_POSIX_THREADS
-#  - PLATFORM_HAS_WIN32_THREADS
+#  - ECL_PLATFORM_HAS_POSIX_THREADS
+#  - ECL_PLATFORM_HAS_WIN32_THREADS
 #
 macro(ecl_detect_threads)
+  if(DEFINED ECL_PLATFORM_HAS_POSIX_THREADS OR ECL_PLATFORM_HAS_WIN32_THREADS)
+    # Do nothing
+  else() 
     include(FindThreads)
     if(CMAKE_USE_PTHREADS_INIT) 
-      set(PLATFORM_HAS_POSIX_THREADS 1)
+      set(ECL_PLATFORM_HAS_POSIX_THREADS TRUE CACHE BOOL "platform has posix threads.")
     elseif(CMAKE_USE_WIN32_THREADS_INIT)
-      set(PLATFORM_HAS_WIN32_THREADS 1)
+      set(ECL_PLATFORM_HAS_WIN32_THREADS TRUE CACHE BOOL "platform has win32 threads.")
     endif(CMAKE_USE_PTHREADS_INIT)
+  endif()
 endmacro()
 
 ###############################
