@@ -13,7 +13,6 @@
 
   <run_depend>ecl_license</run_depend>
   <run_depend>ecl_build</run_depend>
-  <run_depend>ros</run_depend> <!-- Depend on ros for backwards compatability.  This will be removed in Hydro -->
   <export>
     <metapackage/>
   </export>
