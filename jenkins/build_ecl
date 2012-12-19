@@ -1,8 +1,8 @@
 #!/bin/bash
 
 sudo apt-get update
-sudo apt-get install python-wstool python-rospkg python-rosinstall python-vcstools python-rosdep
-sudo apt-get install ros-groovy-ros ros-groovy-catkin
+sudo apt-get -y install python-wstool python-rospkg python-rosinstall python-vcstools python-rosdep
+sudo apt-get -y install ros-groovy-ros ros-groovy-catkin
 rm -rf ${WORKSPACE}/ecl
 mkdir -p ${WORKSPACE}/ecl/src
 mkdir -p ${WORKSPACE}/ecl/build/debug
