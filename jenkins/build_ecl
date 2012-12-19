@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo apt-get update
 sudo apt-get install python-wstool python-rospkg python-rosinstall python-vcstool python-rosdep
 sudo apt-get install ros-groovy-ros ros-groovy-catkin
 rm -rf ${WORKSPACE}/ecl
@@ -8,9 +9,10 @@ mkdir -p ${WORKSPACE}/ecl/build/debug
 mkdir -p ${WORKSPACE}/ecl/build/release
 mkdir -p ${WORKSPACE}/ecl/install/debug
 mkdir -p ${WORKSPACE}/ecl/install/release
-wstool init ${WORKSPACE}/ecl/src https://raw.github.com/stonier/ecl_tools/master/rosinstall/ecl_groovy.rosinstall
+wstool init -j3 ${WORKSPACE}/ecl/src https://raw.github.com/stonier/ecl_tools/master/rosinstall/ecl_groovy.rosinstall
 echo "========== Setting up Ros Environment =========="
 source /opt/ros/groovy/setup.bash
+catkin_init_workspace ${WORKSPACE}/ecl/src
 echo "========== Compiling =========="
 cd ${WORKSPACE}/ecl/build/debug
 cmake -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/ecl/install/debug" ../../src
