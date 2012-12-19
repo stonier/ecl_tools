@@ -14,11 +14,9 @@ echo "========== Setting up Ros Environment =========="
 source /opt/ros/groovy/setup.bash
 catkin_init_workspace ${WORKSPACE}/ecl/src
 echo "========== Compiling =========="
+catkin_make --directory=${WORKSPACE}/ecl/build --source=${WORKSPACE}/ecl/src --build=debug -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/install/debug"
 cd ${WORKSPACE}/ecl/build/debug
-cmake -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/install/debug" ../../src
-make -j3
 make install
+catkin_make --directory=${WORKSPACE}/ecl/build --source=${WORKSPACE}/ecl/src --build=release -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/install/release"
 cd ${WORKSPACE}/ecl/build/release
-cmake -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/install/release" ../../src
-make -j3
 make install
