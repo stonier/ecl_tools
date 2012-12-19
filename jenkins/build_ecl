@@ -15,10 +15,10 @@ source /opt/ros/groovy/setup.bash
 catkin_init_workspace ${WORKSPACE}/ecl/src
 echo "========== Compiling =========="
 cd ${WORKSPACE}/ecl/build/debug
-cmake -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/ecl/install/debug" ../../src
+cmake -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/install/debug" ../../src
 make -j3
 make install
 cd ${WORKSPACE}/ecl/build/release
-cmake -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/ecl/install/release" ../../src
+cmake -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/install/release" ../../src
 make -j3
 make install
