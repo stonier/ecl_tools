@@ -1,17 +1,22 @@
 #!/bin/bash
 
-rm -rf ${WORKSPACE}/ros
-rosinstall ${WORKSPACE}/ros "http://packages.ros.org/cgi-bin/gen_rosinstall.py?rosdistro=electric&variant=ros-base&overlay=no"
-rosinstall ${WORKSPACE}/ros "http://embedded-control-library.googlecode.com/svn/trunk/ecl_unstable.rosinstall"
+sudo apt-get install python-wstool python-rospkg python-rosinstall python-vcstool python-rosdep
+sudo apt-get install ros-groovy-ros ros-groovy-catkin
+rm -rf ${WORKSPACE}/ecl
+mkdir -p ${WORKSPACE}/ecl/src
+mkdir -p ${WORKSPACE}/ecl/build/debug
+mkdir -p ${WORKSPACE}/ecl/build/release
+mkdir -p ${WORKSPACE}/ecl/install/debug
+mkdir -p ${WORKSPACE}/ecl/install/release
+wstool init ${WORKSPACE}/ecl/src https://raw.github.com/stonier/ecl_tools/master/rosinstall/ecl_groovy.rosinstall
 echo "========== Setting up Ros Environment =========="
-source ${WORKSPACE}/ros/setup.bash
+source /opt/ros/groovy/setup.bash
 echo "========== Compiling =========="
-rosmake ecl_lite
-rosmake ecl_core
-rosmake ecl_navigation
-rosmake ecl_manipulation
-# Need to build tests.
-rosmake --target=test ecl_lite
-rosmake --target=test ecl_core
-rosmake --target=test ecl_navigation
-rosmake --target=test ecl_manipulation
+cd ${WORKSPACE}/ecl/build/debug
+cmake -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/ecl/install/debug" ../../src
+make -j3
+make install
+cd ${WORKSPACE}/ecl/build/release
+cmake -DCMAKE_INSTALL_PREFIX=${WORKSPACE}/ecl/install/release" ../../src
+make -j3
+make install
