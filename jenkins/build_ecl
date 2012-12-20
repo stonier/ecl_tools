@@ -18,7 +18,11 @@ catkin_init_workspace ${WORKSPACE}/ecl/src
 echo "========== Compiling =========="
 catkin_make --no-color --directory=${WORKSPACE}/ecl/debug --source=${WORKSPACE}/ecl/src --build=${WORKSPACE}/ecl/debug/build -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/debug/install" -DCMAKE_VERBOSE_MAKEFILE=true
 cd ${WORKSPACE}/ecl/debug/build
+make tests
+make run_tests
 make install
 catkin_make --no-color --directory=${WORKSPACE}/ecl/release --source=${WORKSPACE}/ecl/src --build=${WORKSPACE}/ecl/release/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${WORKSPACE}/ecl/release/install" -DCMAKE_VERBOSE_MAKEFILE=true
 cd ${WORKSPACE}/ecl/release/build
+make tests
+make run_tests
 make install
