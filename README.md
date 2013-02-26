@@ -1,4 +1,4 @@
 ecl_tools
 =========
 
-Tools and utilities for the embedded control libraries.
+Build environment tools and utilities for the embedded control libraries.
