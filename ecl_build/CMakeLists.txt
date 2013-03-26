@@ -11,7 +11,13 @@ project(ecl_build)
 
 find_package(catkin)
 
-catkin_package()
+catkin_package(
+# Play around with this later.
+#    CFG_EXTRAS modules/platform_detection.cmake, 
+#               modules/ecl_package.cmake, 
+#               modules/ecl_build_utilities.cmake, 
+#               templates/uninstall.cmake
+)
 
 
 ##############################################################################

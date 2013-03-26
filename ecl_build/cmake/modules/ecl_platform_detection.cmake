@@ -181,18 +181,34 @@ endmacro()
 #  - ECL_PLATFORM_HAS_MACH_TIMERS
 #  - ECL_PLATFORM_HAS_RT_TIMERS
 #  - ECL_PLATFORM_HAS_POSIX_TIMERS
+# 
+# and also sets the appropriate library variable(s) in:
+#
+#  - ECL_PLATFORM_TIME_LIBRARIES
 #
 macro(ecl_detect_timers)
-  if(WIN32)
-    set(ECL_PLATFORM_HAS_WIN_TIMERS TRUE CACHE BOOL "platform has win32 timers.")
-  elseif(APPLE)
-    set(ECL_PLATFORM_HAS_MACH_TIMERS TRUE CACHE BOOL "platform has apple mach timers.")
-  elseif(ECL_POSIX_HAS_CLOCK_GETTIME AND ECL_POSIX_HAS_CLOCK_NANOSLEEP) # Found by ecl_detect_posix 
-    set(ECL_PLATFORM_HAS_RT_TIMERS TRUE CACHE BOOL "platform has clock_gettime and clock_nanosleep.")
-  elseif ( ECL_POSIX_HAS_TIMERS ) 
-    set(ECL_PLATFORM_HAS_POSIX_TIMERS TRUE CACHE BOOL "platform has basic posix timers.")
+  if(DEFINED ECL_PLATFORM_TIME_LIBRARIES)
+    # Do nothing
+  else() 
+    ecl_detect_posix()
+    ecl_detect_threads()
+    # Note cache variables (ECL_PLATFORM_TIME_LIBRARIES) are read in only, can't modify them
+    # once set. Try set_property(GLOBAL...if you want to do that).
+    if(WIN32)
+      set(ECL_PLATFORM_TIME_LIBRARIES "" CACHE STRING "platform time libraries")
+      set(ECL_PLATFORM_HAS_WIN_TIMERS TRUE CACHE BOOL "platform has win32 timers.")
+    elseif(APPLE)
+      set(ECL_PLATFORM_TIME_LIBRARIES "" CACHE STRING "platform time libraries")
+      set(ECL_PLATFORM_HAS_MACH_TIMERS TRUE CACHE BOOL "platform has apple mach timers.")
+    elseif(ECL_POSIX_HAS_CLOCK_GETTIME AND ECL_POSIX_HAS_CLOCK_NANOSLEEP) # Found by ecl_detect_posix 
+      set(ECL_PLATFORM_TIME_LIBRARIES "rt" CACHE STRING "platform time libraries")
+      set(ECL_PLATFORM_HAS_RT_TIMERS TRUE CACHE BOOL "platform has clock_gettime and clock_nanosleep.")
+    elseif ( ECL_POSIX_HAS_TIMERS ) 
+      set(ECL_PLATFORM_TIME_LIBRARIES "pthread" CACHE STRING "platform time libraries")
+      set(ECL_PLATFORM_HAS_POSIX_TIMERS TRUE CACHE BOOL "platform has basic posix timers.")
+    endif()
   endif()
-  mark_as_advanced(ECL_PLATFORM_HAS_WIN_TIMERS ECL_PLATFORM_HAS_MACH_TIMERS ECL_PLATFORM_HAS_RT_TIMERS ECL_PLATFORM_HAS_POSIX_TIMERS)
+  mark_as_advanced(ECL_PLATFORM_TIME_LIBRARIES ECL_PLATFORM_HAS_WIN_TIMERS ECL_PLATFORM_HAS_MACH_TIMERS ECL_PLATFORM_HAS_RT_TIMERS ECL_PLATFORM_HAS_POSIX_TIMERS)
 endmacro()
 
 ###############################
