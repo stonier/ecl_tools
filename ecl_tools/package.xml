@@ -11,6 +11,7 @@
   <url type="repository">https://github.com/stonier/ecl_tools</url>
   <url type="bugtracker">https://github.com/stonier/ecl_tools/issues</url>
 
+  <buildtool_depend>catkin</buildtool_depend>
   <run_depend>ecl_license</run_depend>
   <run_depend>ecl_build</run_depend>
   <export>
