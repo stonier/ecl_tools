@@ -257,22 +257,31 @@ endmacro()
 # to do it without try_run though. Use try_compile on the classes
 # set up like in ecl/concepts/containers so that it will fail to
 # compile if a private constructor is called. Not necessary for
-# us right now though. 
+# us right now though.
+#
+# To configure this so you may use cache variables to pre-set
+# these variables for the board, refer to
+#
+#   http://www.vtk.org/Wiki/CMake_Cross_Compiling#System_introspection
 # 
+get_filename_component(ECL_CMAKE_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
+
 macro(ecl_detect_char_type)
-  rosbuild_find_ros_package(ecl_build)
-  set(ECL_CMAKE_TESTS_PATH ${ecl_build_PACKAGE_PATH}/cmake/tests)
-  try_run(IS_SIGNED_RAN_SUCCESS
-          IS_SIGNED_COMPILED_SUCCESS 
-              "${CMAKE_BINARY_DIR}"
-              "${ECL_CMAKE_TESTS_PATH}/is_char_signed.cpp"
-              RUN_OUTPUT_VARIABLE IS_SIGNED_OUTPUT
-              )
-   if(IS_SIGNED_OUTPUT STREQUAL "signed")
-     set(PLATFORM_CHAR_IS_SIGNED TRUE)
-   else()
-     set(PLATFORM_CHAR_IS_UNSIGNED TRUE)
-   endif()
+  if(NOT CMAKE_CROSSCOMPILING)
+    try_run(IS_SIGNED_RAN_SUCCESS
+            IS_SIGNED_COMPILED_SUCCESS 
+                "${CMAKE_BINARY_DIR}"
+                "${ECL_CMAKE_ROOT}/tests/is_char_signed.cpp"
+                RUN_OUTPUT_VARIABLE IS_SIGNED_OUTPUT
+                )
+     if(IS_SIGNED_OUTPUT STREQUAL "signed")
+       set(PLATFORM_CHAR_IS_SIGNED TRUE)
+     else()
+       set(PLATFORM_CHAR_IS_UNSIGNED TRUE)
+     endif()
+  else()
+    message(WARNING "ecl_detect_char_type isn't supported for cross-compiling yet.")
+  endif()
 endmacro()
 
 ###############################
@@ -414,7 +423,7 @@ macro(ecl_detect_platform)
     ecl_detect_timers()
     ecl_detect_sizes()
     ecl_detect_endianness()
-    #ecl_detect_char_type() # has a try_run test, bad for cross compiling
+    # ecl_detect_char_type() # has a try_run test, bad for cross compiling until we set up cache variables properly
     ecl_detect_compiler_version()
     if(NOT PLATFORM_IS_POSIX)
       if(WIN32)
