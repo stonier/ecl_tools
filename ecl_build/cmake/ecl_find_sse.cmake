@@ -212,13 +212,13 @@ endmacro(ecl_check_for_sse4_1)
 # Configures PLATFORM_HAS_SSE3 if sse3 code is found and run.
 #
 # Usage:
-#   ecl_check_for_sse3()
+#   ecl_detect_sse3()
 #   if(${PlATFORM_HAS_SSE3})
 #     message(STATUS "Platform has sse3")
 #   else()
 #     message(STATUS "Platform does not have sse3")
 #   endif()
-macro(ecl_check_for_sse3)
+macro(ecl_detect_sse3)
   include(CheckCXXSourceRuns)
   set(CMAKE_REQUIRED_FLAGS)
 
@@ -238,4 +238,4 @@ macro(ecl_check_for_sse3)
           return (0);
       }"
        PLATFORM_HAS_SSE3)
-endmacro(ecl_check_for_sse3)
+endmacro(ecl_detect_sse3)
