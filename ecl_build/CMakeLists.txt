@@ -16,6 +16,7 @@ list(APPEND ${PROJECT_NAME}_MODULES ecl_platform_detection.cmake)
 list(APPEND ${PROJECT_NAME}_MODULES ecl_package.cmake)
 list(APPEND ${PROJECT_NAME}_MODULES ecl_find_sse.cmake)
 list(APPEND ${PROJECT_NAME}_MODULES ecl_build_utilities.cmake)
+list(APPEND ${PROJECT_NAME}_MODULES ecl_cx11.cmake)
 
 catkin_package(
     CFG_EXTRAS ${${PROJECT_NAME}_MODULES}
