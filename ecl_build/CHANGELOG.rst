@@ -1,6 +1,10 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ecl_build
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
+Changelog
+^^^^^^^^^
+
+0.61.0 (2014-09-12)
+-------------------
+* convenience macros for cxx11 flag checks and settings.
 
 0.60.1 (2014-01-29)
 -------------------
