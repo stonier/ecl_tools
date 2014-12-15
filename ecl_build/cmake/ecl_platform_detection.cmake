@@ -89,7 +89,9 @@ endmacro()
 #  - ECL_POSIX_HAS_CPUTIME
 #
 macro(ecl_detect_posix)
-
+  if(DEFINED ECL_PLATFORM_POSIX_CHECKS_RUN)
+    # Do nothing
+  else() 
     # Need some standard cmake modules
     include(CheckSymbolExists)
     include(CheckLibraryExists)
@@ -97,6 +99,7 @@ macro(ecl_detect_posix)
     check_symbol_exists(_POSIX_VERSION unistd.h PLATFORM_IS_POSIX)
 
     if(PLATFORM_IS_POSIX)
+        check_library_exists(rt realpath "" POSIX_HAS_REALPATH)
         check_library_exists(rt clock_nanosleep "" POSIX_HAS_CLOCK_NANOSLEEP)
         check_library_exists(rt clock_gettime "" POSIX_HAS_CLOCK_GETTIME)
         check_library_exists(pthread pthread_mutex_timedlock "" POSIX_HAS_MUTEX_TIMEDLOCK)
@@ -108,7 +111,11 @@ macro(ecl_detect_posix)
         check_symbol_exists(CLOCK_MONOTONIC time.h POSIX_HAS_CLOCK_MONOTONIC)
         check_symbol_exists(CLOCK_PROCESS_CPUTIME_ID time.h POSIX_HAS_CPUTIME)
     endif()
-    
+    if(POSIX_HAS_REALPATH)
+        set(ECL_POSIX_HAS_REALPATH TRUE CACHE BOOL "platform has posix realpath.")
+    else()
+        set(ECL_POSIX_HAS_REALPATH FALSE CACHE BOOL "platform has posix realpath.")
+    endif()
     if(POSIX_HAS_CLOCK_GETTIME)
         set(ECL_POSIX_HAS_CLOCK_GETTIME TRUE CACHE BOOL "platform has posix clock_gettime.")
         set(ECL_POSIX_HAS_CLOCK_MONOTONIC TRUE CACHE BOOL "platform has posix monotonic clock.")
@@ -136,19 +143,23 @@ macro(ecl_detect_posix)
     if(POSIX_HAS_CPUTIME)
         set(ECL_POSIX_HAS_CPUTIME TRUE CACHE BOOL "platform has posix cpu time.")
     endif()
-  mark_as_advanced(
-    ECL_POSIX_HAS_CLOCK_GETTIME
-    ECL_POSIX_HAS_CLOCK_MONOTONIC
-    ECL_POSIX_HAS_CLOCK_NANOSLEEP
-    ECL_POSIX_HAS_CLOCK_SELECTION
-    ECL_POSIX_HAS_NANOSLEEP
-    ECL_POSIX_HAS_TIMERS
-    ECL_POSIX_HAS_PRIORITY_SCHEDULING
-    ECL_POSIX_HAS_TIMEOUTS
-    ECL_POSIX_HAS_SEMAPHORES
-    ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS
-    ECL_POSIX_HAS_CPUTIME
-  )
+    set(ECL_PLATFORM_POSIX_CHECKS_RUN TRUE CACHE BOOL "platform has run posix checks.")
+    mark_as_advanced(
+      ECL_POSIX_HAS_CLOCK_GETTIME
+      ECL_POSIX_HAS_CLOCK_MONOTONIC
+      ECL_POSIX_HAS_CLOCK_NANOSLEEP
+      ECL_POSIX_HAS_CLOCK_SELECTION
+      ECL_POSIX_HAS_NANOSLEEP
+      ECL_POSIX_HAS_TIMERS
+      ECL_POSIX_HAS_PRIORITY_SCHEDULING
+      ECL_POSIX_HAS_REALPATH
+      ECL_POSIX_HAS_TIMEOUTS
+      ECL_POSIX_HAS_SEMAPHORES
+      ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS
+      ECL_POSIX_HAS_CPUTIME
+      ECL_PLATFORM_POSIX_CHECKS_RUN
+    )
+  endif()
 endmacro()
 
 ###############################
@@ -209,6 +220,32 @@ macro(ecl_detect_timers)
     endif()
   endif()
   mark_as_advanced(ECL_PLATFORM_TIME_LIBRARIES ECL_PLATFORM_HAS_WIN_TIMERS ECL_PLATFORM_HAS_MACH_TIMERS ECL_PLATFORM_HAS_RT_TIMERS ECL_PLATFORM_HAS_POSIX_TIMERS)
+endmacro()
+
+###############################
+# Detect Filesystem
+###############################
+# Configures the variables:
+# 
+#  - ECL_PLATFORM_HAS_REALPATH
+# 
+# and also sets the appropriate library variable(s) in:
+#
+#  - ECL_PLATFORM_FILESYSTEM_LIBRARIES
+
+macro(ecl_detect_filesystem)
+  if(DEFINED ECL_PLATFORM_FILESYSTEM_LIBRARIES)
+    # Do nothing
+  else() 
+    ecl_detect_posix()
+    if(WIN32 OR APPLE)
+      set(ECL_PLATFORM_FILESYSTEM_LIBRARIES "" CACHE STRING "platform filesystem properties not yet supported...")
+    elseif(ECL_POSIX_HAS_REALPATH)
+      set(ECL_PLATFORM_FILESYSTEM_LIBRARIES "rt" CACHE STRING "platform filesystem libraries.")
+    else()
+      set(ECL_PLATFORM_FILESYSTEM_LIBRARIES "" CACHE STRING "platform filesystem libraries.")
+    endif()
+  endif()
 endmacro()
 
 ###############################
