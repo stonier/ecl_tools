@@ -2,6 +2,10 @@
 Changelog
 ^^^^^^^^^
 
+0.61.1 (2015-08-16)
+-------------------
+* ecl_detect_filesystem cmake macro added.
+
 0.61.0 (2014-09-12)
 -------------------
 * convenience macros for cxx11 flag checks and settings.
