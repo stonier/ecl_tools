@@ -2,6 +2,10 @@
 Changelog
 ^^^^^^^^^
 
+0.61.2 (2016-01-09)
+-------------------
+* some comments about tricky c++11 hazards.
+
 0.61.1 (2015-08-16)
 -------------------
 * ecl_detect_filesystem cmake macro added.
