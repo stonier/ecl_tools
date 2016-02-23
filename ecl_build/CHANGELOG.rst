@@ -2,6 +2,10 @@
 Changelog
 ^^^^^^^^^
 
+0.61.3 (2016-02-23)
+-------------------
+* added corite cmake module for speeding up builds
+
 0.61.2 (2016-01-09)
 -------------------
 * some comments about tricky c++11 hazards.
