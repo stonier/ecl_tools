@@ -2,6 +2,10 @@
 Changelog
 ^^^^^^^^^
 
+0.61.4 (2016-03-20)
+-------------------
+* check, but just quietly avoid including cotire if version check fails.
+
 0.61.3 (2016-02-23)
 -------------------
 * added corite cmake module for speeding up builds
