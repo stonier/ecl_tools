@@ -30,6 +30,11 @@
 if(__COTIRE_INCLUDED)
 	return()
 endif()
+if(${CMAKE_VERSION} VERSION_LESS 2.8.12)
+  message(STATUS "Cotire not available, requires CMake v2.8.12 [${CMAKE_VERSION}]")
+  return()
+endif()
+
 set(__COTIRE_INCLUDED TRUE)
 
 # call cmake_minimum_required, but prevent modification of the CMake policy stack in include mode
