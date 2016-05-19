@@ -47,8 +47,8 @@ if (NOT CMAKE_SCRIPT_MODE_FILE)
 	cmake_policy(POP)
 endif()
 
-set (COTIRE_CMAKE_MODULE_FILE "${CMAKE_CURRENT_LIST_FILE}")
-set (COTIRE_CMAKE_MODULE_VERSION "1.7.6")
+set(COTIRE_CMAKE_MODULE_FILE "${CMAKE_CURRENT_LIST_FILE}" CACHE STRING "Cotire cmake module filename.")
+set(COTIRE_CMAKE_MODULE_VERSION "1.7.6" CACHE STRING "Cotire major-minor-patch version string.")
 
 # activate select policies
 if (POLICY CMP0025)
@@ -3827,6 +3827,8 @@ else()
 			"Defaults to empty string."
 	)
 
-	message (STATUS "cotire ${COTIRE_CMAKE_MODULE_VERSION} loaded.")
+    if(NOT DEFINED COTIRE_CMAKE_MODULE_VERSION)
+	    message (STATUS "cotire ${COTIRE_CMAKE_MODULE_VERSION} loaded.")
+	endif()
 
 endif()
