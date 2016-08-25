@@ -2,6 +2,10 @@
 Changelog
 ^^^^^^^^^
 
+0.61.5 (2016-08-25)
+-------------------
+* avoid re-loading cotire for every project
+
 0.61.4 (2016-03-20)
 -------------------
 * check, but just quietly avoid including cotire if version check fails.
