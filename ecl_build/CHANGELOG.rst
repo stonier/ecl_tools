@@ -2,8 +2,8 @@
 Changelog
 ^^^^^^^^^
 
-Forthcoming
------------
+0.61.6 (2017-02-05)
+-------------------
 * add additional ubuntu releases to ecl_detect_distro
 * cmake message bugfixes to always include type flag (removes warnings)
 
