@@ -2,6 +2,11 @@
 Changelog
 ^^^^^^^^^
 
+Forthcoming
+-----------
+* add additional ubuntu releases to ecl_detect_distro
+* cmake message bugfixes to always include type flag (removes warnings)
+
 0.61.5 (2016-08-25)
 -------------------
 * avoid re-loading cotire for every project
