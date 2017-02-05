@@ -7,17 +7,17 @@
 ###############################
 # Distro
 ###############################
-# Checks the linux distro and 
+# Checks the linux distro and
 # sets the following variables
 #
 # - DISTRO_NAME
 # - DISTRO_VERSION
 # - DISTRO_VERSION_STRING
 #
-# If no recognised distro is found, it will 
-# return each variable with a -UNKNOWN appended 
+# If no recognised distro is found, it will
+# return each variable with a -UNKNOWN appended
 # (e.g. DISTRO_NAME = DISTRO_NAME-UNKNOWN)
-# 
+#
 macro(ecl_detect_distro)
     if(EXISTS "/etc/issue")
         file(READ "/etc/issue" ETC_ISSUE)
@@ -67,9 +67,9 @@ endmacro()
 ###############################
 # Detect Posix
 ###############################
-# This is as yet quite incomplete, but it suffices for what the 
+# This is as yet quite incomplete, but it suffices for what the
 # ecl currrently does. If it detects posix, it sets
-# 
+#
 #  - PLATFORM_IS_POSIX
 #
 # It also configures the following variables to true
@@ -91,7 +91,7 @@ endmacro()
 macro(ecl_detect_posix)
   if(DEFINED ECL_PLATFORM_POSIX_CHECKS_RUN)
     # Do nothing
-  else() 
+  else()
     # Need some standard cmake modules
     include(CheckSymbolExists)
     include(CheckLibraryExists)
@@ -173,9 +173,9 @@ endmacro()
 macro(ecl_detect_threads)
   if(DEFINED ECL_PLATFORM_HAS_POSIX_THREADS OR ECL_PLATFORM_HAS_WIN32_THREADS)
     # Do nothing
-  else() 
+  else()
     include(FindThreads)
-    if(CMAKE_USE_PTHREADS_INIT) 
+    if(CMAKE_USE_PTHREADS_INIT)
       set(ECL_PLATFORM_HAS_POSIX_THREADS TRUE CACHE BOOL "platform has posix threads.")
     elseif(CMAKE_USE_WIN32_THREADS_INIT)
       set(ECL_PLATFORM_HAS_WIN32_THREADS TRUE CACHE BOOL "platform has win32 threads.")
@@ -187,12 +187,12 @@ endmacro()
 # Detect Timers
 ###############################
 # This is very rough, if the right env found, sets the variables to TRUE
-# 
+#
 #  - ECL_PLATFORM_HAS_WIN_TIMERS
 #  - ECL_PLATFORM_HAS_MACH_TIMERS
 #  - ECL_PLATFORM_HAS_RT_TIMERS
 #  - ECL_PLATFORM_HAS_POSIX_TIMERS
-# 
+#
 # and also sets the appropriate library variable(s) in:
 #
 #  - ECL_PLATFORM_TIME_LIBRARIES
@@ -200,7 +200,7 @@ endmacro()
 macro(ecl_detect_timers)
   if(DEFINED ECL_PLATFORM_TIME_LIBRARIES)
     # Do nothing
-  else() 
+  else()
     ecl_detect_posix()
     ecl_detect_threads()
     # Note cache variables (ECL_PLATFORM_TIME_LIBRARIES) are read in only, can't modify them
@@ -211,10 +211,10 @@ macro(ecl_detect_timers)
     elseif(APPLE)
       set(ECL_PLATFORM_TIME_LIBRARIES "" CACHE STRING "platform time libraries")
       set(ECL_PLATFORM_HAS_MACH_TIMERS TRUE CACHE BOOL "platform has apple mach timers.")
-    elseif(ECL_POSIX_HAS_CLOCK_GETTIME AND ECL_POSIX_HAS_CLOCK_NANOSLEEP) # Found by ecl_detect_posix 
+    elseif(ECL_POSIX_HAS_CLOCK_GETTIME AND ECL_POSIX_HAS_CLOCK_NANOSLEEP) # Found by ecl_detect_posix
       set(ECL_PLATFORM_TIME_LIBRARIES "rt" CACHE STRING "platform time libraries")
       set(ECL_PLATFORM_HAS_RT_TIMERS TRUE CACHE BOOL "platform has clock_gettime and clock_nanosleep.")
-    elseif ( ECL_POSIX_HAS_TIMERS ) 
+    elseif ( ECL_POSIX_HAS_TIMERS )
       set(ECL_PLATFORM_TIME_LIBRARIES "pthread" CACHE STRING "platform time libraries")
       set(ECL_PLATFORM_HAS_POSIX_TIMERS TRUE CACHE BOOL "platform has basic posix timers.")
     endif()
@@ -226,9 +226,9 @@ endmacro()
 # Detect Filesystem
 ###############################
 # Configures the variables:
-# 
+#
 #  - ECL_PLATFORM_HAS_REALPATH
-# 
+#
 # and also sets the appropriate library variable(s) in:
 #
 #  - ECL_PLATFORM_FILESYSTEM_LIBRARIES
@@ -236,7 +236,7 @@ endmacro()
 macro(ecl_detect_filesystem)
   if(DEFINED ECL_PLATFORM_FILESYSTEM_LIBRARIES)
     # Do nothing
-  else() 
+  else()
     ecl_detect_posix()
     if(WIN32 OR APPLE)
       set(ECL_PLATFORM_FILESYSTEM_LIBRARIES "" CACHE STRING "platform filesystem properties not yet supported...")
@@ -252,7 +252,7 @@ endmacro()
 # Detect Sizes
 ###############################
 # Configures the variables:
-# 
+#
 #  - PLATFORM_SIZE_OF_CHAR
 #  - PLATFORM_SIZE_OF_SHORT
 #  - PLATFORM_SIZE_OF_INT
@@ -265,7 +265,7 @@ endmacro()
 #  - PLATFORM_IS_64_BIT
 macro(ecl_detect_sizes)
     include(CheckTypeSize)
-    
+
     CHECK_TYPE_SIZE (char PLATFORM_SIZE_OF_CHAR)
     CHECK_TYPE_SIZE (short PLATFORM_SIZE_OF_SHORT)
     CHECK_TYPE_SIZE (int PLATFORM_SIZE_OF_INT)
@@ -274,10 +274,10 @@ macro(ecl_detect_sizes)
     CHECK_TYPE_SIZE (float PLATFORM_SIZE_OF_FLOAT)
     CHECK_TYPE_SIZE (double PLATFORM_SIZE_OF_DOUBLE)
     CHECK_TYPE_SIZE ("long double" PLATFORM_SIZE_OF_LONG_DOUBLE)
-    
+
     if( CMAKE_SIZEOF_VOID_P EQUAL 4 )
       set(PLATFORM_IS_32_BIT 1)
-    elseif( CMAKE_SIZEOF_VOID_P EQUAL 8 ) 
+    elseif( CMAKE_SIZEOF_VOID_P EQUAL 8 )
       set(PLATFORM_IS_64_BIT 1)
     endif( CMAKE_SIZEOF_VOID_P EQUAL 4 )
 endmacro()
@@ -286,7 +286,7 @@ endmacro()
 # Detect Char Type
 ###############################
 # Configures (or not) the variables:
-# 
+#
 #  - PLATFORM_CHAR_IS_SIGNED
 #  - PLATFORM_CHAR_IS_UNSIGNED
 #
@@ -300,13 +300,13 @@ endmacro()
 # these variables for the board, refer to
 #
 #   http://www.vtk.org/Wiki/CMake_Cross_Compiling#System_introspection
-# 
+#
 get_filename_component(ECL_CMAKE_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
 
 macro(ecl_detect_char_type)
   if(NOT CMAKE_CROSSCOMPILING)
     try_run(IS_SIGNED_RAN_SUCCESS
-            IS_SIGNED_COMPILED_SUCCESS 
+            IS_SIGNED_COMPILED_SUCCESS
                 "${CMAKE_BINARY_DIR}"
                 "${ECL_CMAKE_ROOT}/tests/is_char_signed.cpp"
                 RUN_OUTPUT_VARIABLE IS_SIGNED_OUTPUT
@@ -325,7 +325,7 @@ endmacro()
 # Detect Endianness
 ###############################
 # Configures the variables:
-# 
+#
 #  - PLATFORM_IS_BIG_ENDIAN
 #  - PLATFORM_IS_LITTLE_ENDIAN
 #
@@ -341,7 +341,7 @@ endmacro()
 # Compiler Version
 ###############################
 # Configures the variables:
-# 
+#
 #  - COMPILER_VERSION
 #  - COMPILER_MAJOR_VERSION
 #  - COMPILER_MINOR_VERSION
@@ -467,7 +467,7 @@ macro(ecl_detect_platform)
         set(PLATFORM_IS_WIN32 1)
       endif()
     endif()
-    if(APPLE) 
+    if(APPLE)
       set(PLATFORM_IS_APPLE 1)
     endif()
     ecl_summary_platform()
@@ -481,166 +481,166 @@ endmacro()
 # Summarise platform statistics
 #
 macro(ecl_summary_platform)
-    message("-------------------------------------------------------------------")
-    message("Platform Summary")
-    message("-------------------------------------------------------------------")
-    message("")
+    message(STATUS "-------------------------------------------------------------------")
+    message(STATUS "Platform Summary")
+    message(STATUS "-------------------------------------------------------------------")
+    message(STATUS "")
     # System
     if(PLATFORM_IS_APPLE)
-        message("System type.....................macosx")
+        message(STATUS "System type.....................macosx")
     elseif(PLATFORM_IS_POSIX)
-        message("System type.....................posix")
+        message(STATUS "System type.....................posix")
     elseif(PLATFORM_IS_WIN32)
-        message("System type.....................win32")
+        message(STATUS "System type.....................win32")
     endif()
-    message("Operating System................${CMAKE_SYSTEM}")
+    message(STATUS "Operating System................${CMAKE_SYSTEM}")
     if ( NOT DISTRO_NAME STREQUAL "DISTRO_NAME-UNKNOWN")
-        message("Distro Name.....................${DISTRO_NAME}")
+        message(STATUS "Distro Name.....................${DISTRO_NAME}")
     endif()
     if ( NOT DISTRO_VERSION_STRING STREQUAL "DISTRO_VERSION_STRING-UNKNOWN")
-        message(" - version string...............${DISTRO_VERSION_STRING}")
+        message(STATUS " - version string...............${DISTRO_VERSION_STRING}")
     endif()
     if ( NOT DISTRO_VERSION STREQUAL "DISTRO_VERSION-UNKNOWN")
-        message(" - version......................${DISTRO_VERSION}")
+        message(STATUS " - version......................${DISTRO_VERSION}")
     endif()
     # Timers
     if(ECL_PLATFORM_HAS_RT_TIMERS)
-        message("Timer model.....................real-time")
+        message(STATUS "Timer model.....................real-time")
     elseif(ECL_PLATFORM_HAS_MACH_TIMERS)
-        message("Timer model.....................macosx")
+        message(STATUS "Timer model.....................macosx")
     elseif(ECL_PLATFORM_HAS_POSIX_TIMERS)
-        message("Timer model.....................posix")
+        message(STATUS "Timer model.....................posix")
     elseif(ECL_PLATFORM_HAS_WIN_TIMERS)
-        message("Timer model.....................winmm")
+        message(STATUS "Timer model.....................winmm")
     else()
-        message("Timer model.....................unspecified")
+        message(STATUS "Timer model.....................unspecified")
     endif()
     # Threads
     if(CMAKE_USE_PTHREADS_INIT)
-        message("Thread model....................posix")
+        message(STATUS "Thread model....................posix")
     elseif(CMAKE_USE_WIN32_THREADS_INIT)
-        message("Thread model....................win32")
+        message(STATUS "Thread model....................win32")
     else(CMAKE_USE_PTHREADS_INIT)
-        message("Thread model....................none")
+        message(STATUS "Thread model....................none")
     endif(CMAKE_USE_PTHREADS_INIT)
     # Type sizes
-    message("Size of char....................${PLATFORM_SIZE_OF_CHAR}")
-    message("Size of short...................${PLATFORM_SIZE_OF_SHORT}")
-    message("Size of int.....................${PLATFORM_SIZE_OF_INT}")
-    message("Size of long....................${PLATFORM_SIZE_OF_LONG}")
-    message("Size of long long...............${PLATFORM_SIZE_OF_LONG_LONG}")
-    message("Size of float...................${PLATFORM_SIZE_OF_FLOAT}")
-    message("Size of double..................${PLATFORM_SIZE_OF_DOUBLE}")
-    message("Size of long double.............${PLATFORM_SIZE_OF_LONG_DOUBLE}")
+    message(STATUS "Size of char....................${PLATFORM_SIZE_OF_CHAR}")
+    message(STATUS "Size of short...................${PLATFORM_SIZE_OF_SHORT}")
+    message(STATUS "Size of int.....................${PLATFORM_SIZE_OF_INT}")
+    message(STATUS "Size of long....................${PLATFORM_SIZE_OF_LONG}")
+    message(STATUS "Size of long long...............${PLATFORM_SIZE_OF_LONG_LONG}")
+    message(STATUS "Size of float...................${PLATFORM_SIZE_OF_FLOAT}")
+    message(STATUS "Size of double..................${PLATFORM_SIZE_OF_DOUBLE}")
+    message(STATUS "Size of long double.............${PLATFORM_SIZE_OF_LONG_DOUBLE}")
     if(PLATFORM_IS_32_BIT)
-        message("Size of pointer.................32-bit")
+        message(STATUS "Size of pointer.................32-bit")
     elseif(PLATFORM_IS_64_BIT)
-        message("Size of pointer.................64-bit")
+        message(STATUS "Size of pointer.................64-bit")
     endif(PLATFORM_IS_32_BIT)
-    
+
     if(PLATFORM_IS_BIG_ENDIAN)
-        message("Endianness......................big-endian")
+        message(STATUS "Endianness......................big-endian")
     else(PLATFORM_IS_BIG_ENDIAN)
-        message("Endianness......................little-endian")
+        message(STATUS "Endianness......................little-endian")
     endif(PLATFORM_IS_BIG_ENDIAN)
-    message("")
+    message(STATUS "")
 
     if(PLATFORM_IS_POSIX)
-        message("-------------------------------------------------------------------")
-        message("Posix Specifications")
-        message("-------------------------------------------------------------------")
-        message("")
+        message(STATUS "-------------------------------------------------------------------")
+        message(STATUS "Posix Specifications")
+        message(STATUS "-------------------------------------------------------------------")
+        message(STATUS "")
         if(ECL_POSIX_HAS_CLOCK_SELECTION)
-            message("Clock selection.................yes")
+            message(STATUS "Clock selection.................yes")
         else()
-            message("Clock selection.................no")
+            message(STATUS "Clock selection.................no")
         endif()
         if(ECL_POSIX_HAS_CLOCK_MONOTONIC)
-            message("Monotonic clock.................yes")
+            message(STATUS "Monotonic clock.................yes")
         else()
-          message("Monotonic clock.................no")
+          message(STATUS "Monotonic clock.................no")
         endif()
         if(ECL_POSIX_HAS_PRIORITY_SCHEDULING)
-            message("Priority scheduling.............yes")
+            message(STATUS "Priority scheduling.............yes")
         else()
-            message("Priority scheduling.............no")
+            message(STATUS "Priority scheduling.............no")
         endif()
         if(ECL_POSIX_HAS_SEMAPHORES)
-            message("Semaphores......................yes")
+            message(STATUS "Semaphores......................yes")
         else()
-            message("Semaphores......................no")
+            message(STATUS "Semaphores......................no")
         endif()
         if(ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS)
-            message("Shared memory objects...........yes")
+            message(STATUS "Shared memory objects...........yes")
         else()
-            message("Shared memory objects...........no")
+            message(STATUS "Shared memory objects...........no")
         endif()
         if(ECL_POSIX_HAS_TIMERS)
-            message("Timers..........................yes")
+            message(STATUS "Timers..........................yes")
         else()
-            message("Timers..........................no")
+            message(STATUS "Timers..........................no")
         endif()
         if(ECL_POSIX_HAS_TIMEOUTS)
-            message("Timeouts........................yes")
+            message(STATUS "Timeouts........................yes")
         else()
-            message("Timeouts........................no")
+            message(STATUS "Timeouts........................no")
         endif()
         if(ECL_POSIX_HAS_CLOCK_GETTIME)
-            message(" - clock_gettime................yes")
+            message(STATUS " - clock_gettime................yes")
         else()
-            message(" - clock_gettime................no")
+            message(STATUS " - clock_gettime................no")
         endif()
         if(ECL_POSIX_HAS_CLOCK_NANOSLEEP)
-            message(" - clock_nanosleep..............yes")
+            message(STATUS " - clock_nanosleep..............yes")
         else()
-            message(" - clock_nanosleep..............no")
+            message(STATUS " - clock_nanosleep..............no")
         endif()
         if(ECL_POSIX_HAS_NANOSLEEP)
-            message(" - nanosleep....................yes")
+            message(STATUS " - nanosleep....................yes")
         else()
-            message(" - nanosleep....................no")
+            message(STATUS " - nanosleep....................no")
         endif()
         if(POSIX_HAS_MUTEX_TIMEDLOCK)
-            message(" - pthread_mutex_timedlock......yes")
+            message(STATUS " - pthread_mutex_timedlock......yes")
         else()
-            message(" - pthread_mutex_timedlock......no")
+            message(STATUS " - pthread_mutex_timedlock......no")
         endif()
         if(POSIX_HAS_SCHED_SETSCHEDULER)
-            message(" - sched_setscheduler...........yes")
+            message(STATUS " - sched_setscheduler...........yes")
         else()
-            message(" - sched_setscheduler...........no")
+            message(STATUS " - sched_setscheduler...........no")
         endif()
         if(ECL_POSIX_HAS_SEMAPHORES)
             if(POSIX_HAS_SEM_INIT)
-                message(" - sem_init.....................yes")
+                message(STATUS " - sem_init.....................yes")
             else()
-                message(" - sem_init.....................no")
+                message(STATUS " - sem_init.....................no")
             endif()
             if(POSIX_HAS_SEM_TIMEDWAIT)
-                message(" - sem_timedwait................yes")
+                message(STATUS " - sem_timedwait................yes")
             else()
-                message(" - sem_timedwait................no")
+                message(STATUS " - sem_timedwait................no")
             endif()
         endif()
         if(ECL_POSIX_HAS_SHARED_MEMORY_OBJECTS)
             if(POSIX_HAS_SHM_OPEN)
-                message(" - shm_open.....................yes")
+                message(STATUS " - shm_open.....................yes")
             else()
-                message(" - shm_open.....................no")
+                message(STATUS " - shm_open.....................no")
             endif()
         endif()
-        message("")
+        message(STATUS "")
     endif()
-    message("-------------------------------------------------------------------")
-    message("Build Environment")
-    message("-------------------------------------------------------------------")
-    message("")
+    message(STATUS "-------------------------------------------------------------------")
+    message(STATUS "Build Environment")
+    message(STATUS "-------------------------------------------------------------------")
+    message(STATUS "")
     # Compiler
-    message("Compiler........................${CMAKE_CXX_COMPILER}")
+    message(STATUS "Compiler........................${CMAKE_CXX_COMPILER}")
     if(COMPILER_VERSION)
-        message(" - version......................${COMPILER_VERSION}")
+        message(STATUS " - version......................${COMPILER_VERSION}")
     endif()
-    message("")
+    message(STATUS "")
 endmacro()
 
 #endif // DOXYGEN_SHOULD_SKIP_THIS
