@@ -1,4 +1,5 @@
-<package>
+<?xml version="1.0"?>
+<package format="2">
   <name>ecl_tools</name>
   <version>0.61.7</version>
   <description>
@@ -11,10 +12,12 @@
   <url type="repository">https://github.com/stonier/ecl_tools</url>
   <url type="bugtracker">https://github.com/stonier/ecl_tools/issues</url>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <run_depend>ecl_license</run_depend>
-  <run_depend>ecl_build</run_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <exec_depend>ecl_license</exec_depend>
+  <exec_depend>ecl_build</exec_depend>
   <export>
+    <build_type>ament_cmake</build_type>
     <metapackage/>
   </export>
 </package>

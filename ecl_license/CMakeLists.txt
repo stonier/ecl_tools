@@ -2,16 +2,14 @@
 # Cmake
 ##############################################################################
 
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.5)
 project(ecl_license)
 
 ##############################################################################
-# Catkin
+# ament
 ##############################################################################
 
-find_package(catkin)
-
-catkin_package()
+find_package(ament_cmake)
 
 
 ##############################################################################
@@ -20,7 +18,10 @@ catkin_package()
 
 
 install(DIRECTORY licenses 
-        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+        DESTINATION share
         PATTERN ".svn" EXCLUDE
         PATTERN "CMakeLists.txt" EXCLUDE
        )
+
+ament_export_include_directories(include)
+ament_package()
