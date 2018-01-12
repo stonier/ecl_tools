@@ -20,7 +20,6 @@ list(APPEND ${PROJECT_NAME}_MODULES ${CMAKE_SOURCE_DIR}/cmake/ecl_cx11.cmake)
 list(APPEND ${PROJECT_NAME}_MODULES ${CMAKE_SOURCE_DIR}/cmake/cotire.cmake)
 
 ament_export_include_directories(include)
-ament_export_libraries(${PROJECT_NAME})
 ament_package(CONFIG_EXTRAS ${${PROJECT_NAME}_MODULES})
 
 ##############################################################################
