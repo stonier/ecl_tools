@@ -6,7 +6,7 @@ cmake_minimum_required(VERSION 3.5)
 project(ecl_build)
 
 ##############################################################################
-# ament
+# Ament
 ##############################################################################
 
 find_package(ament_cmake REQUIRED)
@@ -19,7 +19,6 @@ list(APPEND ${PROJECT_NAME}_MODULES ${CMAKE_SOURCE_DIR}/cmake/ecl_build_utilitie
 list(APPEND ${PROJECT_NAME}_MODULES ${CMAKE_SOURCE_DIR}/cmake/ecl_cx11.cmake)
 list(APPEND ${PROJECT_NAME}_MODULES ${CMAKE_SOURCE_DIR}/cmake/cotire.cmake)
 
-ament_export_include_directories(include)
 ament_package(CONFIG_EXTRAS ${${PROJECT_NAME}_MODULES})
 
 ##############################################################################
