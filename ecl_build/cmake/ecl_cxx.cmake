@@ -1,3 +1,12 @@
+##############################################################################
+# Detect
+##############################################################################
+
+macro(ecl_check_for_cxx14_compiler CX14_COMPILER_FOUND)
+  include(CheckCXXCompilerFlag)
+  CHECK_CXX_COMPILER_FLAG("-std=c++14" CXX14_COMPILER_FOUND)
+endmacro()
+
 macro(ecl_check_for_cxx11_compiler CX11_COMPILER_FOUND)
   include(CheckCXXCompilerFlag)
   CHECK_CXX_COMPILER_FLAG("-std=c++11" CXX11_COMPILER_FOUND)
@@ -6,6 +15,20 @@ endmacro()
 macro(ecl_check_for_cxx0x_compiler CXX0X_COMPILER_FOUND)
   include(CheckCXXCompilerFlag)
   CHECK_CXX_COMPILER_FLAG("-std=c++0x" CXX0X_COMPILER_FOUND)
+endmacro()
+
+##############################################################################
+# Enable
+##############################################################################
+
+macro(ecl_enable_cxx14_compiler)
+  ecl_check_for_cxx14_compiler(CXX14_COMPILER_FOUND)
+  if(CXX14_COMPILER_FOUND)
+    # Includes additional flags that the ros2 libraries build in by default
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Wl,--no-as-needed")
+  else()
+    message(FATAL_ERROR "Requested cxx14 flags, but this compiler does not support it.")
+  endif()
 endmacro()
 
 # This is tricky, it won't be default in g++ until version 6.0
@@ -20,7 +43,7 @@ endmacro()
 # options/features to the target.
 #
 # For examples, see what we did in ecl_linear algebra, or
-# what ceres-solver has done in 
+# what ceres-solver has done in
 #
 #    https://ceres-solver.googlesource.com/ceres-solver/+/master/internal/ceres/CMakeLists.txt
 #

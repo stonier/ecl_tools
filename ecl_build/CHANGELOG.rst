@@ -2,6 +2,11 @@
 Changelog
 ^^^^^^^^^
 
+Forthcoming
+-----------
+* cxx14 support
+* ubuntu distros zesty and artful
+
 0.61.6 (2017-02-05)
 -------------------
 * add additional ubuntu releases to ecl_detect_distro
