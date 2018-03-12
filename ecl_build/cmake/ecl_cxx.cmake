@@ -21,6 +21,8 @@ endmacro()
 # Enable
 ##############################################################################
 
+# Might prefer to handle it better using the cmake variables
+# e.g. https://github.com/ros2/realtime_support/blob/master/tlsf_cpp/CMakeLists.txt#L10
 macro(ecl_enable_cxx14_compiler)
   ecl_check_for_cxx14_compiler(CXX14_COMPILER_FOUND)
   if(CXX14_COMPILER_FOUND)
