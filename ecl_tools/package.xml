@@ -18,6 +18,5 @@
   <exec_depend>ecl_build</exec_depend>
   <export>
     <build_type>ament_cmake</build_type>
-    <metapackage/>
   </export>
 </package>
