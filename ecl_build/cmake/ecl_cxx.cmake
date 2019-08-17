@@ -27,7 +27,7 @@ macro(ecl_enable_cxx14_compiler)
   ecl_check_for_cxx14_compiler(CXX14_COMPILER_FOUND)
   if(CXX14_COMPILER_FOUND)
     # Includes additional flags that the ros2 libraries build in by default
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Wl,--no-as-needed")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Werror -Wpedantic")
   else()
     message(FATAL_ERROR "Requested cxx14 flags, but this compiler does not support it.")
   endif()
