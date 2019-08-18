@@ -21,15 +21,17 @@ endmacro()
 # Enable
 ##############################################################################
 
-# Might prefer to handle it better using the cmake variables
-# e.g. https://github.com/ros2/realtime_support/blob/master/tlsf_cpp/CMakeLists.txt#L10
+# Enable CXX14 and abort if not available
 macro(ecl_enable_cxx14_compiler)
-  ecl_check_for_cxx14_compiler(CXX14_COMPILER_FOUND)
-  if(CXX14_COMPILER_FOUND)
-    # Includes additional flags that the ros2 libraries build in by default
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -Wall -Wextra -Wl,--no-as-needed")
-  else()
-    message(FATAL_ERROR "Requested cxx14 flags, but this compiler does not support it.")
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)  # aborts with an error if the requested standard is not available
+  set(CMAKE_CXX_EXTENSIONS OFF)  # if ON, it will use gnu++14 instead of std++14
+  set(CMAKE_CXX_STANDARD 14)
+endmacro()
+
+# Enable the kitchen sink, i.e. as much as possible.
+macro(ecl_enable_cxx_warnings)
+  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wall -Wextra -Werror -Wpedantic)
   endif()
 endmacro()
 
