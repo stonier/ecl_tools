@@ -2,6 +2,10 @@
 Changelog
 ^^^^^^^^^
 
+0.61.8 (2018-08-18)
+-------------------
+* cross platform enabling of cx11
+
 0.61.6 (2017-02-05)
 -------------------
 * add additional ubuntu releases to ecl_detect_distro
