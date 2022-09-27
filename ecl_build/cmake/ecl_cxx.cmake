@@ -2,6 +2,13 @@
 # Enable
 ##############################################################################
 
+# Enable CXX17 and abort if not available
+macro(ecl_enable_cxx17_compiler)
+  set(CMAKE_CXX_STANDARD_REQUIRED ON)  # aborts with an error if the requested standard is not available
+  set(CMAKE_CXX_EXTENSIONS OFF)  # if ON, it will use gnu++17 instead of std++17
+  set(CMAKE_CXX_STANDARD 17)
+endmacro()
+
 # Enable CXX14 and abort if not available
 macro(ecl_enable_cxx14_compiler)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)  # aborts with an error if the requested standard is not available
