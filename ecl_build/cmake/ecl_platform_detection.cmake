@@ -222,7 +222,7 @@ macro(ecl_detect_threads)
   if(DEFINED ECL_PLATFORM_HAS_POSIX_THREADS OR ECL_PLATFORM_HAS_WIN32_THREADS)
     # Do nothing
   else()
-    include(FindThreads)
+    find_package(Threads)
     if(CMAKE_USE_PTHREADS_INIT)
       set(ECL_PLATFORM_HAS_POSIX_THREADS TRUE CACHE BOOL "platform has posix threads.")
     elseif(CMAKE_USE_WIN32_THREADS_INIT)
